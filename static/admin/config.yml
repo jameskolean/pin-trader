@@ -3,6 +3,7 @@ development_overrides:
     name: file-system
     api_root: 'http://localhost:8000/api'
   publish_mode: simple
+
 backend:
   name: git-gateway
   squash_merges: true
