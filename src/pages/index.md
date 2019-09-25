@@ -1,6 +1,6 @@
 ---
 templateKey: index-page
-title: Great pins for discriminating. hello world
+title: Great pins for discriminating. hello world sdfsdfsdssdf
 image: /img/home-jumbotron.jpg
 heading: Great coffee with a conscience
 subheading: Support sustainable farming while enjoying a cup
