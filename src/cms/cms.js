@@ -10,12 +10,8 @@ import IndexPagePreview from './preview-templates/IndexPagePreview';
 
 // If running in development
 if (process.env.NODE_ENV === 'development') {
-  //   window.CMS_ENV = 'development_overrides'; // Set the CMS_ENV to the development_ overrides.
-  //   console.log(
-  //     '============================================================================',
-  //   );
-  //   console.log(FileSystemBackend);
-  //   CMS.registerBackend('file-system', FileSystemBackend); // Register the FileSystemBackend.
+  window.CMS_ENV = 'development_overrides'; // Set the CMS_ENV to the development_ overrides.
+  CMS.registerBackend('file-system', FileSystemBackend); // Register the FileSystemBackend.
 }
 CMS.registerMediaLibrary(uploadcare);
 CMS.registerMediaLibrary(cloudinary);
