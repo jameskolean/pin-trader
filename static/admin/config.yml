@@ -1,13 +1,6 @@
-development_overrides:
-  # run file-system backend for local development
-  backend:
-    name: file-system
-    api_root: /api
-  # reset 'editorial_workflow' if enabled, since it breaks in file-system mode
-  # publish_mode: ''
 backend:
   name: git-gateway
-  branch: master
+  branch: feature/sample
 
 media_folder: static/img
 public_folder: /img
