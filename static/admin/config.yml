@@ -1,10 +1,8 @@
-evelopment_overrides:
-  # run file-system backend for local development
+development_overrides:
   backend:
     name: file-system
-    api_root: /api
-  # reset 'editorial_workflow' if enabled, since it breaks in file-system mode
-  publish_mode: ''
+    api_root: 'http://localhost:8000/api'
+  publish_mode: simple
 backend:
   name: git-gateway
   squash_merges: true

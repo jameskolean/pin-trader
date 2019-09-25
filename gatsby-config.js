@@ -1,5 +1,5 @@
-var proxy = require('http-proxy-middleware')
-
+var proxy = require('http-proxy-middleware');
+let fsApi = require('netlify-cms-backend-fs/dist/fs/fs-express-api');
 module.exports = {
   siteMetadata: {
     title: 'Gatsby + Netlify CMS Starter',
@@ -65,6 +65,10 @@ module.exports = {
       resolve: 'gatsby-plugin-netlify-cms',
       options: {
         modulePath: `${__dirname}/src/cms/cms.js`,
+        enableIdentityWidget: false,
+        publicPath: 'admin',
+        htmlTitle: 'Content Manager',
+        manualInit: true,
       },
     },
     {
@@ -78,15 +82,17 @@ module.exports = {
   ],
   // for avoiding CORS while developing Netlify Functions locally
   // read more: https://www.gatsbyjs.org/docs/api-proxy/#advanced-proxying
-  developMiddleware: app => {
-    app.use(
-      '/.netlify/functions/',
-      proxy({
-        target: 'http://localhost:9000',
-        pathRewrite: {
-          '/.netlify/functions/': '',
-        },
-      })
-    )
-  },
-}
+  developMiddleware: fsApi,
+  //   developMiddleware: app => {
+  //     app.use(
+  //       '/.netlify/functions/',
+  //       proxy({
+  //         target: 'http://localhost:9000',
+  //         pathRewrite: {
+  //           '/.netlify/functions/': '',
+  //         },
+  //       }),
+  //     );
+  //   },
+  // };
+};
