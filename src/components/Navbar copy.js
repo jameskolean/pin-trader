@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   AppBar,
@@ -12,7 +12,7 @@ import {
   Typography,
   useScrollTrigger,
 } from '@material-ui/core';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { makeStyles, fade } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -81,91 +81,63 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function HideOnScroll({ children }) {
+const [anchorEl, setAnchorEl] = useState(null);
+const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+const isMenuOpen = Boolean(anchorEl);
+const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+const menuId = 'primary-search-account-menu';
+const mobileMenuId = 'primary-search-account-menu-mobile';
+
+const HideOnScroll = props => {
+  const { children } = props;
   const trigger = useScrollTrigger();
+
   return (
     <Slide appear={false} direction="down" in={!trigger}>
       {children}
     </Slide>
   );
-}
+};
 
 HideOnScroll.propTypes = {
   children: PropTypes.element.isRequired,
 };
 
-export default function Navbar(props) {
+const handleProfileMenuOpen = event => {
+  setAnchorEl(event.currentTarget);
+};
+
+const handleMobileMenuClose = () => {
+  setMobileMoreAnchorEl(null);
+};
+
+const handleMenuClose = () => {
+  setAnchorEl(null);
+  handleMobileMenuClose();
+};
+
+const handleMobileMenuOpen = event => {
+  setMobileMoreAnchorEl(event.currentTarget);
+};
+
+const renderMenu = (
+  <Menu
+    anchorEl={anchorEl}
+    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+    id={menuId}
+    keepMounted
+    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+    open={isMenuOpen}
+    onClose={handleMenuClose}
+  >
+    <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+    <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+  </Menu>
+);
+
+const Navbar = props => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = event => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
   return (
     <>
       <HideOnScroll {...props}>
@@ -230,9 +202,9 @@ export default function Navbar(props) {
           </Toolbar>
         </AppBar>
       </HideOnScroll>
-      {renderMobileMenu}
-      {renderMenu}
       <Toolbar />
     </>
   );
-}
+};
+
+export default Navbar;
