@@ -7,7 +7,7 @@ development_overrides:
 backend:
   name: git-gateway
   squash_merges: true
-  branch: feature/material/ui
+  branch: develop
 
 publish_mode: editorial_workflow
 media_folder: static/img
