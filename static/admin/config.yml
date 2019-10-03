@@ -14,25 +14,133 @@ media_folder: static/img
 public_folder: /img
 
 collections:
-  - name: 'blog'
-    label: 'Blog'
-    folder: 'src/pages/blog'
+  # - name: 'blog'
+  #   label: 'Blog'
+  #   folder: 'src/pages/blog'
+  #   create: true
+  #   slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+  #   fields:
+  #     - {
+  #         label: 'Template Key',
+  #         name: 'templateKey',
+  #         widget: 'hidden',
+  #         default: 'blog-post',
+  #       }
+  #     - { label: 'Title', name: 'title', widget: 'string' }
+  #     - { label: 'Publish Date', name: 'date', widget: 'datetime' }
+  #     - { label: 'Description', name: 'description', widget: 'text' }
+  #     - { label: 'Featured Post', name: 'featuredpost', widget: 'boolean' }
+  #     - { label: 'Featured Image', name: 'featuredimage', widget: image }
+  #     - { label: 'Body', name: 'body', widget: 'markdown' }
+  #     - { label: 'Tags', name: 'tags', widget: 'list' }
+
+  - name: 'products'
+    label: 'Products'
+    folder: 'src/pages/products'
     create: true
-    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+    identifier_field: sku
+    summary: "{{label}} - {{sku}}"
     fields:
       - {
           label: 'Template Key',
           name: 'templateKey',
           widget: 'hidden',
-          default: 'blog-post',
+          default: 'product-page',
         }
-      - { label: 'Title', name: 'title', widget: 'string' }
-      - { label: 'Publish Date', name: 'date', widget: 'datetime' }
+      - { label: 'SKU', name: 'sku', widget: 'string' }
+      - { label: 'Label', name: 'label', widget: 'string' }
       - { label: 'Description', name: 'description', widget: 'text' }
-      - { label: 'Featured Post', name: 'featuredpost', widget: 'boolean' }
-      - { label: 'Featured Image', name: 'featuredimage', widget: image }
       - { label: 'Body', name: 'body', widget: 'markdown' }
-      - { label: 'Tags', name: 'tags', widget: 'list' }
+      - { label: 'Image', name: image, widget: image }
+      - {
+          label: "Minimum Bid (in cents)",
+          name: "minimumBid",
+          widget: "number",
+          default: 100,
+          valueType: "int",
+          min: 1,
+          step: 1,
+      }
+      - {
+          label: "Buy Now Price (in cents)",
+          name: "buyNowPrice",
+          widget: "number",
+          default: 19999,
+          valueType: "int",
+          min: 1,
+          step: 1,
+      }
+      - {
+        label: "Start time",
+        name: "startTime",
+        widget: "datetime",
+        default: "",
+      }
+      - {
+        label: "End time",
+        name: "endTime",
+        widget: "datetime",
+        default: "",
+      }
+      - {
+        label: 'Featured Product',
+        name: 'featuredproduct',
+        widget: 'boolean',
+        default: false,
+      }
+      - {
+        label: "Seller",
+        name: "seller",
+        widget: "relation",
+        collection: "sellers",
+        searchFields: ["name"],
+        valueField: "name",
+        displayFields: ["name"]
+      }
+
+  - name: 'sellers'
+    label: 'Sellers'
+    folder: 'src/pages/sellers'
+    identifier_field: name
+    create: true
+    fields:
+      - {
+          label: 'Template Key',
+          name: 'templateKey',
+          widget: 'hidden',
+          default: 'seller-page',
+        }
+      - { label: 'Name', name: 'name', widget: 'string' }
+      - { label: 'Rating', name: 'rating', widget: 'number', default: 3, valueType: "float", min: 0, max: 5}
+
+
+      # - {
+      #     label: Main Image,
+      #     name: mainimage,
+      #     widget: object,
+      #     fields:
+      #       [
+      #         { label: 'Image', name: image, widget: image },
+      #         { label: 'Alt Text', name: text, widget: text },
+      #       ],
+      #   }
+      # - {
+      #     label: Images,
+      #     name: images,
+      #     widget: list,
+      #     fields:
+      #       [
+      #         { label: 'Image', name: image, widget: image },
+      #         { label: 'Alt Text', name: text, widget: text },
+      #       ],
+      #   }
+      # - {
+      #     label: 'Featured Product',
+      #     name: 'featuredproduct',
+      #     widget: 'boolean',
+      #   }
+      # - { label: 'Body', name: 'body', widget: 'markdown' }
+      # - { label: 'Tags', name: 'tags', widget: 'list' }
 
   - name: 'pages'
     label: 'Pages'

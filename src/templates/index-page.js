@@ -1,65 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
 import { graphql } from 'gatsby';
-
-import { Grid, Paper, Typography } from '@material-ui/core';
 import Layout from '../components/Layout';
+import FeaturedProducts from '../components/FeaturedProducts';
 
-export const IndexPageTemplate = ({
-  image,
-  title,
-  heading,
-  subheading,
-  mainpitch,
-  description,
-  intro,
-}) => (
-  <Grid
-    spacing={3}
-    container
-    direction="column"
-    justify="center"
-    alignItems="stretch"
-  >
-    <Grid item>
-      <Paper>
-        <Typography variant="h1">Featured</Typography>
-      </Paper>
-    </Grid>
-    <Grid item>
-      <Paper>
-        <Typography variant="h1">Latest</Typography>
-      </Paper>
-    </Grid>
-  </Grid>
-);
+const useStyles = makeStyles({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+  },
+});
+
+export const IndexPageTemplate = ({ featuredproducts }) => {
+  const classes = useStyles();
+  return (
+    <div className={classes.root}>
+      <FeaturedProducts products={featuredproducts.nodes} />
+    </div>
+  );
+};
 
 IndexPageTemplate.propTypes = {
-  image: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-  title: PropTypes.string,
-  heading: PropTypes.string,
-  subheading: PropTypes.string,
-  mainpitch: PropTypes.object,
-  description: PropTypes.string,
-  intro: PropTypes.shape({
-    blurbs: PropTypes.array,
-  }),
+  featuredproducts: PropTypes.object,
 };
 
 const IndexPage = ({ data }) => {
-  const { frontmatter } = data.markdownRemark;
+  //  const { frontmatter } = data.markdownRemark;
 
   return (
     <Layout>
-      <IndexPageTemplate
-        image={frontmatter.image}
-        title={frontmatter.title}
-        heading={frontmatter.heading}
-        subheading={frontmatter.subheading}
-        mainpitch={frontmatter.mainpitch}
-        description={frontmatter.description}
-        intro={frontmatter.intro}
-      />
+      <IndexPageTemplate featuredproducts={data.allMarkdownRemark} />
     </Layout>
   );
 };
@@ -69,6 +42,7 @@ IndexPage.propTypes = {
     markdownRemark: PropTypes.shape({
       frontmatter: PropTypes.object,
     }),
+    allMarkdownRemark: PropTypes.object,
   }),
 };
 
@@ -106,6 +80,44 @@ export const pageQuery = graphql`
           }
           heading
           description
+        }
+      }
+    }
+    allMarkdownRemark(
+      filter: {
+        fields: {}
+        headings: {}
+        frontmatter: { featuredproduct: { eq: true } }
+      }
+      limit: 4
+    ) {
+      nodes {
+        fields {
+          slug
+        }
+        id
+        frontmatter {
+          label
+          buyNowPrice
+          endTime
+          description
+          startTime
+          sku
+          templateKey
+          image {
+            id
+            childImageSharp {
+              fixed(height: 100) {
+                ...GatsbyImageSharpFixed
+              }
+            }
+          }
+        }
+        internal {
+          content
+          description
+          ignoreType
+          mediaType
         }
       }
     }

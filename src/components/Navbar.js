@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import { Link } from 'gatsby';
+import axios from 'axios';
 import {
   AppBar,
   Badge,
@@ -23,7 +25,19 @@ import {
 } from './DrawerListItems';
 
 export default function Navbar({ classes }) {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
+
+  const signin = () => {
+    console.log('________________________________________________');
+    axios
+      .get('http://localhost:8000/.netlify/functions/users-read-all')
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -51,10 +65,17 @@ export default function Navbar({ classes }) {
           >
             <MenuIcon />
           </IconButton>
-
-          <Typography className={classes.title} variant="h6" noWrap>
-            Pin Trader
-          </Typography>
+          <Link
+            to="/"
+            style={{
+              textDecoration: 'none',
+              color: 'white',
+            }}
+          >
+            <Typography className={classes.title} variant="h6" noWrap>
+              Pin Trader
+            </Typography>
+          </Link>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -89,6 +110,7 @@ export default function Navbar({ classes }) {
             aria-haspopup="true"
             // aria-controls={menuId}
             // onClick={handleProfileMenuOpen}
+            onClick={signin}
             color="inherit"
           >
             <AccountCircle />
